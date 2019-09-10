@@ -1,0 +1,44 @@
+version: "3"
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - nodejs
+    networks:
+      - app
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels: [NGINX=NGINX]
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+
+  nodejs:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: docker_nodejs
+    networks:
+      - app
+    deploy:
+      mode: replicated
+      replicas: 10
+      labels: [APP=APP]
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+
+networks:
+  app:
+    driver: overlay
