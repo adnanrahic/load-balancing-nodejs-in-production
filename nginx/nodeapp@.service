@@ -1,0 +1,16 @@
+# /lib/systemd/system/nodeapp@.service
+
+[Unit]
+Description=Running Node.js as a system service.
+Documentation=https://example.com
+After=network.target
+
+[Service]
+Environment=PORT=%i
+Type=simple
+User=ubuntu
+ExecStart=/usr/bin/node /home/ubuntu/app.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
