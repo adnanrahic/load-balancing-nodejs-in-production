@@ -4,6 +4,8 @@ const app = require('./app')
 const port = 3000
 
 const masterProcess = () => {
+  console.log(`Master  running on port ${port} with pid ${process.pid}`)
+
   for (let i = 0; i < numCPUs; i++) {
     cluster.fork()
     cluster.on('exit', (worker) => cluster.fork())
@@ -11,7 +13,7 @@ const masterProcess = () => {
 }
 const childProcess = () => {
   app.listen(port, () =>
-    console.log('Server running on port ' + port + ' from worker #' + cluster.worker.id))
+    console.log(`Worker${cluster.worker.id} running on port ${port} with pid ${cluster.worker.process.pid}`))
 }
 
 if (cluster.isMaster) {
