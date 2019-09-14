@@ -1,0 +1,49 @@
+version: "3"
+services:
+  nginx:
+    build:
+      context: ./
+      dockerfile: Dockerfile.nginx
+    image: adnanrahic/docker_nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - nodejs
+    networks:
+      - app
+
+    # optional: Docker Swarm
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels: [NGINX=NGINX]
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+
+  nodejs:
+    build:
+      context: ./
+      dockerfile: Dockerfile.nodejs
+    image: adnanrahic/docker_nodejs
+    networks:
+      - app
+
+    # optional: Docker Swarm
+    deploy:
+      mode: replicated
+      replicas: 10
+      labels: [APP=APP]
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+
+networks:
+  app:
+    driver: overlay

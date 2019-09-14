@@ -1,0 +1,29 @@
+version: "3"
+services:
+  nginx:
+    image: adnanrahic/docker_nginx
+    deploy:
+      replicas: 1
+    ports:
+      - "80:80"
+    environment:
+      - GET_HOSTS_FROM=dns
+    labels:
+      kompose.service.type: LoadBalancer
+    depends_on:
+      - nodejs
+    networks:
+      - app
+  nodejs:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: adnanrahic/docker_nodejs
+    deploy:
+      replicas: 4
+    environment:
+      - GET_HOSTS_FROM=dns
+    labels:
+      kompose.service.type: LoadBalancer
+    networks:
+      - app
