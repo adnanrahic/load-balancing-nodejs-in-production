@@ -1,7 +1,7 @@
 # /lib/systemd/system/nodeapp@.service
 
 [Unit]
-Description=Running Node.js as a system service.
+Description=Node.js as a system service.
 Documentation=https://example.com
 After=network.target
 
