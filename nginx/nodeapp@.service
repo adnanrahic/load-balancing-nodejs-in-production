@@ -9,6 +9,7 @@ After=network.target
 Environment=PORT=%i
 Type=simple
 User=ubuntu
+# replace with the absolute path to your app.js file
 ExecStart=/usr/bin/node /home/ubuntu/app.js
 Restart=on-failure
 

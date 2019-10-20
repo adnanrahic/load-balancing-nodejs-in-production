@@ -9,6 +9,7 @@ After=network.target
 Environment=PORT=3000
 Type=simple
 User=ubuntu
+# replace with the absolute path to your cluster.js file
 ExecStart=/usr/bin/node /home/ubuntu/cluster.js
 Restart=on-failure
 
